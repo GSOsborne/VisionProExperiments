@@ -10,17 +10,21 @@ import RealityKit
 import RealityKitContent
 
 struct ContentView: View {
-
+    @Environment(\.openImmersiveSpace) var openImmersiveSpace
     var body: some View {
         VStack {
             Model3D(named: "Scene", bundle: realityKitContentBundle)
                 .padding(.bottom, 50)
 
-            Text("Hello this is Afrida")
-            Text("Let's score a hoop!")
+            Text("Throw the ball!")
+            
             ToggleImmersiveSpaceButton()
         }
         .padding()
+        .task{
+            await
+            openImmersiveSpace(id: "physicsball")
+        }
     }
 }
 

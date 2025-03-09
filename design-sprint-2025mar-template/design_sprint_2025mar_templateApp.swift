@@ -17,6 +17,10 @@ struct design_sprint_2025mar_templateApp: App {
             ContentView()
                 .environment(appModel)
         }
+        
+        ImmersiveSpace(id: "physicsball"){
+            PhysicsBall()
+        }
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             ImmersiveView()
