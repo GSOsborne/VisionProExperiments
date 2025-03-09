@@ -48,6 +48,26 @@ struct PhysicsBall: View {
             sphereEntity.components.set(HoverEffectComponent())
             
             content.add(sphereEntity)
+            
+            //also want a floor for the ball to bounce on
+            let floorMesh = MeshResource.generateBox(width: 100, height: 0.01, depth: 100)
+            let floorMaterial = SimpleMaterial(color: .clear, isMetallic: false)
+            
+            let floorEntity = ModelEntity(mesh: floorMesh, materials: [floorMaterial])
+
+            let floorShape = ShapeResource.generateBox(size: [100, 0.01, 100])
+            floorEntity.position.x = 0.0
+            floorEntity.position.y = 0.0
+            floorEntity.position.z = 0.0
+            floorEntity.components.set(CollisionComponent(shapes: [.generateBox(size: [100.0, 0.01, 100.0])]))
+            var floorPhysicsBody = PhysicsBodyComponent(
+                shapes: [floorShape],
+                density: 10_000)
+            floorPhysicsBody.isAffectedByGravity = false
+            floorEntity.components.set(floorPhysicsBody)
+            content.add(floorEntity)
+            
+            
         }.gesture(DragGesture().targetedToAnyEntity()
             .onChanged{ value in
                 theSphereEntity?.physicsMotion?.linearVelocity = [0.0 , 0.0, 0.0]
@@ -70,7 +90,8 @@ struct PhysicsBall: View {
                 
             }.onEnded{value in
                 isDragging=false
-                theSphereEntity?.physicsMotion?.linearVelocity = forceToApply * 10
+                theSphereEntity?.physicsMotion?.linearVelocity = forceToApply * 5
+                theSphereEntity?.physicsBody?.isAffectedByGravity = true
             }
         )
         .hoverEffect{ effect, isActive, _ in
