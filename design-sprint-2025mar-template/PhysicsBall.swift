@@ -71,6 +71,7 @@ struct PhysicsBall: View {
             content.add(floorEntity)
             
             let subscribe = content.subscribe(to: CollisionEvents.Began.self, on: theSphereEntity) { event in
+                print("Collision between ball and floor, I assume")
                 theSphereEntity?.position = resetPosition
                 theSphereEntity?.physicsMotion?.linearVelocity = [0.0 , 0.0, 0.0]
                 theSphereEntity?.physicsBody?.isAffectedByGravity = false
