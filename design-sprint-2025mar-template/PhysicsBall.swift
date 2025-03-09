@@ -11,13 +11,16 @@ import RealityKit
 struct PhysicsBall: View {
     @State private var currentEntityPosition =
     SIMD3<Float> (x:0, y:1, z:0)
+    @State private var resetPosition = SIMD3<Float> (x:0, y:1.0, z: -1.5)
     @State private var isDragging: Bool = false
     @State private var sphereRadius: Float = 0.3
     @State private var theSphereEntity : ModelEntity?
     @State private var forceToApply : SIMD3<Float> = .zero
+    @State private var subs: [EventSubscription] = []
     
     var body: some View {
         RealityView{ content in
+            
             let sphereMesh = MeshResource.generateSphere(radius: sphereRadius)
             let material = SimpleMaterial(color: .red, isMetallic: true)
             let sphereEntity = ModelEntity(mesh:sphereMesh, materials: [material])
@@ -54,7 +57,7 @@ struct PhysicsBall: View {
             let floorMaterial = SimpleMaterial(color: .clear, isMetallic: false)
             
             let floorEntity = ModelEntity(mesh: floorMesh, materials: [floorMaterial])
-
+            
             let floorShape = ShapeResource.generateBox(size: [100, 0.01, 100])
             floorEntity.position.x = 0.0
             floorEntity.position.y = 0.0
@@ -67,6 +70,12 @@ struct PhysicsBall: View {
             floorEntity.components.set(floorPhysicsBody)
             content.add(floorEntity)
             
+            let subscribe = content.subscribe(to: CollisionEvents.Began.self, on: theSphereEntity) { event in
+                theSphereEntity?.position = resetPosition
+                theSphereEntity?.physicsMotion?.linearVelocity = [0.0 , 0.0, 0.0]
+                theSphereEntity?.physicsBody?.isAffectedByGravity = false
+                                }
+            subs.append(subscribe)
             
         }.gesture(DragGesture().targetedToAnyEntity()
             .onChanged{ value in
@@ -92,6 +101,7 @@ struct PhysicsBall: View {
                 isDragging=false
                 theSphereEntity?.physicsMotion?.linearVelocity = forceToApply * 5
                 theSphereEntity?.physicsBody?.isAffectedByGravity = true
+                
             }
         )
         .hoverEffect{ effect, isActive, _ in
