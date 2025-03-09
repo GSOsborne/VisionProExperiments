@@ -22,7 +22,7 @@ struct ContentView: View {
         }
         .padding()
         .task{
-            await
+            //await
             //openImmersiveSpace(id: "physicsball")
         }
     }
