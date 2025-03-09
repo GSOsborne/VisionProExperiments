@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealityKit
+import AVFoundation
 
 struct PhysicsBall: View {
     @State private var currentEntityPosition =
@@ -17,6 +18,7 @@ struct PhysicsBall: View {
     @State private var theSphereEntity : ModelEntity?
     @State private var forceToApply : SIMD3<Float> = .zero
     @State private var subs: [EventSubscription] = []
+    @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
         RealityView{ content in
@@ -72,6 +74,7 @@ struct PhysicsBall: View {
             
             let subscribe = content.subscribe(to: CollisionEvents.Began.self, on: theSphereEntity) { event in
                 print("Collision between ball and floor, I assume")
+                playCollisionSound()
                 theSphereEntity?.position = resetPosition
                 theSphereEntity?.physicsMotion?.linearVelocity = [0.0 , 0.0, 0.0]
                 theSphereEntity?.physicsBody?.isAffectedByGravity = false
@@ -109,6 +112,19 @@ struct PhysicsBall: View {
             effect.scaleEffect(isActive ? 1.05 : 1.0)
         }
         
+    }
+    func playCollisionSound() {
+        guard let path = Bundle.main.path(forResource: "Shoop 2", ofType:"m4a") else {
+            return }
+        let url = URL(fileURLWithPath: path)
+
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 
