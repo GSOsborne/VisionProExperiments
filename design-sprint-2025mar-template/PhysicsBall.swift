@@ -3,7 +3,7 @@
 //  GestureControl
 //
 //  Created by MedVR07 on 3/9/25.
-//
+//  updated by Jeah on 3/14/25.
 
 import SwiftUI
 import RealityKit
@@ -18,13 +18,27 @@ struct PhysicsBall: View {
     @State private var theSphereEntity : ModelEntity?
     @State private var forceToApply : SIMD3<Float> = .zero
     @State private var subs: [EventSubscription] = []
+    @Binding var selectedObject: String
+    @Binding var score: Int
     @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
         RealityView{ content in
             
             let sphereMesh = MeshResource.generateSphere(radius: sphereRadius)
-            let material = SimpleMaterial(color: .red, isMetallic: true)
+            
+            let material: SimpleMaterial
+                        switch selectedObject {
+                        case "Metalball":
+                            material = SimpleMaterial(color: .red, isMetallic: true)
+                        case "Plasticball":
+                            material = SimpleMaterial(color: .systemTeal, isMetallic: false)
+                        case "Glassball":
+                            material = SimpleMaterial(color: .clear, isMetallic: false)
+                        default:
+                            material = SimpleMaterial(color: .red, isMetallic: true)
+                        }
+            
             let sphereEntity = ModelEntity(mesh:sphereMesh, materials: [material])
             theSphereEntity = sphereEntity
             let shape = ShapeResource.generateSphere(radius: sphereRadius)
@@ -128,6 +142,7 @@ struct PhysicsBall: View {
     }
 }
 
-#Preview(immersionStyle:.automatic) {
-    PhysicsBall()
-}
+#Preview {
+    
+    }
+
