@@ -42,9 +42,25 @@ struct ContentView: View {
     var body: some View {
         HStack {
             VStack {
-                if !isInImmersiveSpace {
+                if isInImmersiveSpace {
+                    Spacer()
+                                Text("How many times can you hit the target?🎯")
+                                    .font(.title)
+                                    .bold()
+                                    .padding()
+
+                                Text("Score: \(score)")
+                                    .font(.system(size: 36, weight: .bold))
+                                    .padding(20)
+                                    .background(Color.white.opacity(0.4))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                                    .padding(.top, 30)
                     Spacer()
                     
+                            } else {
+                                
+                    Spacer()
                     Text("Welcome to the Mini Game:\n Throw the Ball☄️")
                         .font(.largeTitle)
                         .bold()
@@ -53,29 +69,14 @@ struct ContentView: View {
                         .padding(.bottom, 10)
                     
                     
-                    Text("Press the start button below to enter immersive space\nwhere you can throw the ball and aim for the targets.\nYour score will keep track of how well you match each one!")
+                    Text("Press the start button below to enter immersive space\nwhere you can throw the ball and aim for the target.\nYour score will keep track of how well you match the target!")
                         .font(.body)
                         .padding()
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 10)
                     
-                } else{
-                    
-                    Text("How many times can you hit the target?")
-                        .font(.title)
-                        .bold()
-                        .padding(.top, 30)
-                    
-                    Text("Score: \(score)")
-                        .font(.system(size: 36, weight: .bold))
-                        .padding(20)
-                        .background(Color.white.opacity(0.4))
-                        .foregroundColor(.white)
-                        .cornerRadius(15)
-                        .padding(.top, 10)
-                    
-                }
+                } 
                     
                     // Button to start the game/enter the immersive space
                     ToggleImmersiveSpaceButton(isInImmersiveSpace: $isInImmersiveSpace)

@@ -17,7 +17,6 @@ struct PhysicsBall: View {
     @State private var isDragging: Bool = false
     @State private var sphereRadius: Float = 0.3
     @State private var theSphereEntity : ModelEntity?
-    @State private var theTargetEntity : Entity?
     @State private var forceToApply : SIMD3<Float> = .zero
     @State private var subs: [EventSubscription] = []
     @Binding var selectedObject: String
@@ -25,13 +24,7 @@ struct PhysicsBall: View {
     @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
-        RealityView{ content in
-            if let targetContentEntity = try? await Entity(named: "target", in: realityKitContentBundle){
-                theTargetEntity = targetContentEntity
-                content.add(targetContentEntity)
-            }
-    
-        }
+       
         
         
         RealityView{ content in
