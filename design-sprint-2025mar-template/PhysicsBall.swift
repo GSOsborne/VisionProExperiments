@@ -28,7 +28,7 @@ struct PhysicsBall: View {
     @State private var forceToApply : SIMD3<Float> = .zero
     @State private var subs: [EventSubscription] = []
     @Binding var selectedObject: String
-    @Binding var score: Int
+    @Binding var ballScore: Int
     @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
@@ -129,8 +129,10 @@ struct PhysicsBall: View {
                     theSphereEntity?.physicsBody?.isAffectedByGravity = false
                 }
                 else if(event.entityA == self.theTargetEntity || event.entityB == self.theTargetEntity){
-                    score = score + 1
-                    print("score is: " + score.description)
+                    
+                    ballScore = ballScore + 1
+                    
+                    print("score is: " + ballScore.description)
                 }
             }
             subs.append(subscribe)

@@ -24,7 +24,7 @@ struct design_sprint_2025mar_templateApp: App {
         // ImmersiveSpace setup
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             // The immersive space content, passing the score and selectedObject
-            PhysicsBall(selectedObject: $selectedObject, score: $score)
+            PhysicsBall(selectedObject: $selectedObject, score: $score.wrappedValue)
                 .environment(appModel)
                 .onAppear {
                     appModel.immersiveSpaceState = .open
