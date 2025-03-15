@@ -21,28 +21,9 @@ struct ImmersiveView: View {
         }
     
     var body: some View {
-        HStack {
+        
             VStack {
-                Text("How many times can you hit the target?")
-                    .font(.title)
-                    .bold()
-                    .padding(.top, 30)
-                
-                Text("Score: \(score)")
-                    .font(.system(size: 36, weight: .bold))
-                    .padding(20)
-                    .background(Color.white.opacity(0.4))
-                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                    .padding(.top, 10)
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color.black.opacity(0.5))
             
-            Spacer()
-            
-           
-                
                 RealityView { content in
                     // Add the initial RealityKit content
                     if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
