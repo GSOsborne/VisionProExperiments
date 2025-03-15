@@ -7,15 +7,17 @@
 
 import SwiftUI
 import RealityKit
+import RealityKitContent
 import AVFoundation
 
 struct PhysicsBall: View {
     @State private var currentEntityPosition =
     SIMD3<Float> (x:0, y:1, z:0)
-    @State private var resetPosition = SIMD3<Float> (x:0, y:1.0, z: -1.5)
+    @State private var resetPosition = SIMD3<Float> (x:1.0, y:0.5, z: -1.5)
     @State private var isDragging: Bool = false
     @State private var sphereRadius: Float = 0.3
     @State private var theSphereEntity : ModelEntity?
+    @State private var theTargetEntity : Entity?
     @State private var forceToApply : SIMD3<Float> = .zero
     @State private var subs: [EventSubscription] = []
     @Binding var selectedObject: String
@@ -23,6 +25,15 @@ struct PhysicsBall: View {
     @State var audioPlayer: AVAudioPlayer?
     
     var body: some View {
+        RealityView{ content in
+            if let targetContentEntity = try? await Entity(named: "target", in: realityKitContentBundle){
+                theTargetEntity = targetContentEntity
+                content.add(targetContentEntity)
+            }
+    
+        }
+        
+        
         RealityView{ content in
             
             let sphereMesh = MeshResource.generateSphere(radius: sphereRadius)
@@ -88,6 +99,8 @@ struct PhysicsBall: View {
             
             let subscribe = content.subscribe(to: CollisionEvents.Began.self, on: theSphereEntity) { event in
                 print("Collision between ball and floor, I assume")
+                score = score + 1
+                print("score is: " + score.description)
                 playCollisionSound()
                 theSphereEntity?.position = resetPosition
                 theSphereEntity?.physicsMotion?.linearVelocity = [0.0 , 0.0, 0.0]
