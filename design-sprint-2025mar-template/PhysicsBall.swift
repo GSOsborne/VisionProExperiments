@@ -13,7 +13,8 @@ import AVFoundation
 struct PhysicsBall: View {
     @State private var currentEntityPosition =
     SIMD3<Float> (x:0, y:1, z:0)
-    @State private var resetPosition = SIMD3<Float> (x:1.0, y:0.5, z: -1.5)
+    @State private var resetPosition = SIMD3<Float> (x:1.0, y:1.0, z: -1.5)
+    @State private var targetStartPosition = SIMD3<Float> (x:0.0, y:2.0, z: -2.0)
     @State private var isDragging: Bool = false
     @State private var sphereRadius: Float = 0.3
     @State private var theSphereEntity : ModelEntity?
@@ -28,6 +29,7 @@ struct PhysicsBall: View {
         RealityView{ content in
             if let targetContentEntity = try? await Entity(named: "target", in: realityKitContentBundle){
                 theTargetEntity = targetContentEntity
+                theTargetEntity?.position = targetStartPosition
                 content.add(targetContentEntity)
             }
     
