@@ -35,8 +35,9 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @StateObject private var audioManager = AudioPlayerManager()
     @State private var isInImmersiveSpace = false
-    @State private var score = 0
     @Binding var selectedObject: String
+    @Binding var score: Int
+    
     
     
     var body: some View {
@@ -56,6 +57,8 @@ struct ContentView: View {
                                     .foregroundColor(.white)
                                     .cornerRadius(15)
                                     .padding(.top, 30)
+                                PhysicsBall(selectedObject: $selectedObject, ballScore: $score)
+                            
                     Spacer()
                     
                             } else {
@@ -122,13 +125,7 @@ struct ContentView: View {
                 audioManager.startBackgroundMusic()
             }
             
-            // Show immersive view when enabled
-            if isInImmersiveSpace {
-                ImmersiveView(score: $score)
-                    .edgesIgnoringSafeArea(.all)
-                
-                
-            }
+            
         }
     }
     

@@ -4,6 +4,7 @@
 //
 //  Created by jenny on 3/6/25.
 //  updated by Jeah on 3/14/25.
+//  ui fixed by Jeah on 3/20/25.
 
 import SwiftUI
 
@@ -17,14 +18,14 @@ struct design_sprint_2025mar_templateApp: App {
     var body: some Scene {
         WindowGroup {
             // Now `openImmersiveSpace` is accessed directly within ContentView
-            ContentView(selectedObject: $selectedObject)
+            ContentView(selectedObject: $selectedObject, score:$score)
                 .environment(appModel)
         }
 
         // ImmersiveSpace setup
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             // The immersive space content, passing the score and selectedObject
-            PhysicsBall(selectedObject: $selectedObject, score: $score)
+            PhysicsBall(selectedObject: $selectedObject, ballScore: $score)
                 .environment(appModel)
                 .onAppear {
                     appModel.immersiveSpaceState = .open
